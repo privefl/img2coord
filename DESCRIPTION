@@ -1,0 +1,14 @@
+Package: img2coord
+Title: Coordinates of Points from an Image
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Florian",
+           family = "Privé",
+           role = c("aut", "cre"),
+           email = "florian.prive.21@gmail.com")
+Description: What the package does (one paragraph).
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.0
