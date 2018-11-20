@@ -27,11 +27,13 @@ Get coordinates from image of points
 # Create some image
 file <- tempfile(fileext = ".png")
 png(file, width = 600, height = 400)
-plot(x <- c(0, runif(20), 1))
+plot(y <- c(0, runif(20), 1))
 dev.off()
 
 # Get coordinates
-img2coord(file, seq(5, 20, 5), seq(0, 1, 0.2), K_min = 10, K_max = 30)
-x
+(coord <- img2coord(file, seq(5, 20, 5), seq(0, 1, 0.2),
+                    K_min = 10, K_max = 30))
+round(coord$x, 1)
+plot(coord$y, y, pch = 20, cex = 1.5); abline(0, 1, col = "red")
 
 }

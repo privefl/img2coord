@@ -51,8 +51,9 @@ img2coord <- function(file, x_ticks, y_ticks, K, K_min = K, K_max = K) {
   # ticks to values
   mods <- get_tick_mod(img_mat, list.contour, x_ticks, y_ticks)
 
+  par.save <- par(mar = rep(0.1, 4)); on.exit(par(par.save), add = TRUE)
   plot(img, rescale = FALSE, axes = FALSE,
-       main = sprintf("%d points", attr(clusters, "K_opt")))
+       main = sprintf("\n\n\n%d points", attr(clusters, "K_opt")))
   pos <- sweep(centers, 2, attr(img_mat_in, "offset"), '+')
   points(pos, pch = 20, col = "red")
 
