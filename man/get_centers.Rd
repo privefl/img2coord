@@ -4,7 +4,7 @@
 \alias{get_centers}
 \title{Get centers by computing the barycenter of pixels of each cluster}
 \usage{
-get_centers(img_mat_in, points, K_opt)
+get_centers(img_mat_in, points, clusters)
 }
 \description{
 Get centers by computing the barycenter of pixels of each cluster
