@@ -1,6 +1,6 @@
 library(doParallel)
 registerDoParallel(cl <- makeCluster(4))
-test <- foreach (n = sample(5:100, 10e3, TRUE), .combine = 'rbind') %dopar% {
+test <- foreach(n = sample(10:100, 100, TRUE), .combine = 'c') %do% {
 
   # Create image file
   {
@@ -12,10 +12,12 @@ test <- foreach (n = sample(5:100, 10e3, TRUE), .combine = 'rbind') %dopar% {
 
   # Get image as sparse matrix
   {
-    img_mat <- img2coord:::img2Matrix(file)
+    img <- imager::grayscale(imager::load.image(file))
+    # plot(img, rescale = FALSE, axes = FALSE)
+    img_mat <- Matrix::Matrix(round(1 - as.matrix(img), 14), sparse = TRUE)
     stopifnot(class(img_mat) == "dgCMatrix")
     dim(img_mat)
-    Matrix::image(img_mat)
+    # Matrix::image(img_mat)
   }
 
   # Get contour and inside
@@ -28,19 +30,9 @@ test <- foreach (n = sample(5:100, 10e3, TRUE), .combine = 'rbind') %dopar% {
   ind <- which(img_mat_in != 0, arr.ind = TRUE)
   ind
 
-  hc <- hclust(dist(ind))
-  x <- hc$height
-  max <- sapply(seq_along(x), function(i) {
-    y <- head(x, i)
-    quantile(y, 0.75) + 1 * IQR(y)
-  })
-  max2 <- sapply(seq_along(x), function(i) {
-    y <- head(x, i)
-    quantile(y, 0.75) + 1.5 * IQR(y)
-  })
+  clusters <- img2coord:::get_clusters(ind, 5:110)
 
-  c(min(which(cumsum(rev(x > max)) != seq_along(x))) - n,
-    min(which(cumsum(rev(x > max2)) != seq_along(x))) - n)
+  length(unique(clusters)) - n
 }
 table(test[, 1])
 #     0     1     2     3     4     5     6     7     8     9

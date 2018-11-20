@@ -1,6 +1,5 @@
 ################################################################################
 
-#' Use the same values for consecutive indices
 tick2val <- function(uval, ind) {
 
   N <- length(ind)
@@ -64,15 +63,17 @@ get_tick_mod <- function(img_mat, list_ind_cont, val_tick_x, val_tick_y) {
   w.y <- img_mat[i.y, ind.y]
 
   x.val <- tick2val(val_tick_x, ind.x)
-  y.val <- tick2val(val_tick_y, ind.y)
+  y.val <- tick2val(rev(val_tick_y), ind.y)
 
-  lm.x <- stats::lm(value ~ pos, weights = w.x,
-                    data = data.frame(pos = ind.x, value = x.val))
-  stopifnot(summary(lm.x)$adj.r.squared > 0.99)
+  suppressWarnings({
+    lm.x <- stats::lm(value ~ pos, weights = w.x,
+                      data = data.frame(pos = ind.x, value = x.val))
+    stopifnot(summary(lm.x)$adj.r.squared > 0.99)
 
-  lm.y <- stats::lm(value ~ pos, weights = w.y,
-                    data = data.frame(pos = ind.y, value = y.val))
-  stopifnot(summary(lm.y)$adj.r.squared > 0.99)
+    lm.y <- stats::lm(value ~ pos, weights = w.y,
+                      data = data.frame(pos = ind.y, value = y.val))
+    stopifnot(summary(lm.y)$adj.r.squared > 0.99)
+  })
 
   list(mod.x = lm.x, mod.y = lm.y)
 }

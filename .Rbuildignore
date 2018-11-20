@@ -1,3 +1,4 @@
+^tmp-png$
 ^tmp-tests$
 ^.*\.Rproj$
 ^\.Rproj\.user$

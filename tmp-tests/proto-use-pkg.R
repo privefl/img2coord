@@ -33,11 +33,11 @@ library(Matrix)
 ind <- which(img_mat_in != 0, arr.ind = TRUE)
 ind
 
-clusters <- img2coord:::get_clusters(ind)
+clusters <- img2coord:::get_clusters(ind, 10:30)
 
 centers <- img2coord:::get_centers(img_mat_in, ind, clusters)
 plot(ind, pch = 20)
-points(t(centers), col = "red", pch = 20, lwd = 2)
+points(centers, col = "red", pch = 20, lwd = 2)
 
 
 

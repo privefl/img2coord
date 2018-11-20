@@ -13,6 +13,8 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0.9000
 Imports: 
+    cluster,
     imager,
+    ineq,
     Matrix,
     stats
