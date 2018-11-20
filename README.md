@@ -7,7 +7,7 @@ R package to guess coordinates from a scatter plot (as an image).
 ```
 devtools::install_github("privefl/img2coord")
 library(img2coord)
-?img2coord
+?get_coord
 ```
 
 ## Example
@@ -19,7 +19,7 @@ library(img2coord)
 ### Code
 
 ```
-img2coord(
+get_coord(
   "tmp-png/prs_bc.png",
   x_ticks = seq(0, 12, 2),
   y_ticks = 52:57 / 100, 

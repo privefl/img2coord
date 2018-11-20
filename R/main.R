@@ -24,12 +24,12 @@
 #' dev.off()
 #'
 #' # Get coordinates
-#' (coord <- img2coord(file, seq(5, 20, 5), seq(0, 1, 0.2),
+#' (coord <- get_coord(file, seq(5, 20, 5), seq(0, 1, 0.2),
 #'                     K_min = 10, K_max = 30))
 #' round(coord$x, 1)
 #' plot(coord$y, y, pch = 20, cex = 1.5); abline(0, 1, col = "red")
 #'
-img2coord <- function(file, x_ticks, y_ticks, K, K_min = K, K_max = K) {
+get_coord <- function(file, x_ticks, y_ticks, K, K_min = K, K_max = K) {
 
   # Get image as sparse matrix
   img <- imager::grayscale(imager::load.image(file))
