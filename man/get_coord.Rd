@@ -4,10 +4,15 @@
 \alias{get_coord}
 \title{Get coordinates from image of points}
 \usage{
-get_coord(file, x_ticks, y_ticks, K, K_min = K, K_max = K)
+get_coord(file, x_ticks, y_ticks, K, K_min = K, K_max = K,
+  max_pixels = 3000)
 }
 \arguments{
 \item{file}{Path to image.}
+
+\item{x_ticks}{Values of all ticks of the x axis.}
+
+\item{y_ticks}{Values of all ticks of the y axis.}
 
 \item{K}{Number of points in the image.
 Use \code{K_min} and \code{K_max} if you only know an interval.}
@@ -15,6 +20,8 @@ Use \code{K_min} and \code{K_max} if you only know an interval.}
 \item{K_min}{Minimum number of points in the image.}
 
 \item{K_max}{Maximum number of points in the image.}
+
+\item{max_pixels}{Maximum number of pixels representing points.}
 }
 \value{
 A list of coordinates. There is also an attribute "stat" which was

@@ -3,18 +3,20 @@
 #' Get coordinates from image of points
 #'
 #' @param file Path to image.
-#' @param x_ticks
-#' @param y_ticks
+#' @param x_ticks Values of all ticks of the x axis.
+#' @param y_ticks Values of all ticks of the y axis.
 #' @param K Number of points in the image.
 #'   Use `K_min` and `K_max` if you only know an interval.
 #' @param K_min Minimum number of points in the image.
 #' @param K_max Maximum number of points in the image.
+#' @param max_pixels Maximum number of pixels representing points.
 #'
 #' @return A list of coordinates. There is also an attribute "stat" which was
 #'   used to guess the number of points in the image.
 #' @export
 #'
 #' @import Matrix
+#' @importFrom magrittr %>%
 #'
 #' @examples
 #' # Create some image
@@ -29,10 +31,14 @@
 #' round(coord$x, 1)
 #' plot(coord$y, y, pch = 20, cex = 1.5); abline(0, 1, col = "red")
 #'
-get_coord <- function(file, x_ticks, y_ticks, K, K_min = K, K_max = K) {
+get_coord <- function(file, x_ticks, y_ticks, K, K_min = K, K_max = K,
+                      max_pixels = 3000) {
 
   # Get image as sparse matrix
-  img <- imager::grayscale(imager::load.image(file))
+  img <- file %>%
+    imager::load.image() %>%
+    imager::flatten.alpha() %>%
+    imager::grayscale()
 
   img_mat <- Matrix(round(1 - as.matrix(img), 14), sparse = TRUE)
   stopifnot(class(img_mat) == "dgCMatrix")
@@ -43,6 +49,13 @@ get_coord <- function(file, x_ticks, y_ticks, K, K_min = K, K_max = K) {
 
   # Get points
   ind <- which(img_mat_in != 0, arr.ind = TRUE)
+  if (nrow(ind) > max_pixels) {
+    stop(call. = FALSE, sprintf(
+      "Detected more than %d pixels associated with points (%d).%s%s",
+      max_pixels, nrow(ind),
+      "\n  Make sure you have a white background with no grid (only points).",
+      "\n  You can change 'max_pixels', but it could become slow."))
+  }
 
   # Get clusters and centers
   clusters <- get_clusters(ind, seq(K_min, K_max))

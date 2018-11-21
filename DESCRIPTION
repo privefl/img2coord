@@ -16,5 +16,6 @@ Imports:
     cluster,
     imager,
     ineq,
+    magrittr,
     Matrix,
     stats

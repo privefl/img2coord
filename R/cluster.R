@@ -1,22 +1,5 @@
 ################################################################################
 
-get_clusters <- function(points) {
-
-  hc <- stats::hclust(stats::dist(points))
-
-  x <- hc$height
-  max <- sapply(seq_along(x), function(i) {
-    y <- head(x, i)
-    quantile(y, 0.75) + 1.5 * IQR(y)
-  })
-
-  K <- min(which(cumsum(rev(x > max)) != seq_along(x)))
-
-  stats::cutree(hc, K)
-}
-
-################################################################################
-
 get_centers <- function(img_mat_in, points, clusters) {
 
   do.call("rbind", by(points, clusters, simplify = FALSE, FUN = function(pts) {
@@ -34,6 +17,8 @@ get_centers <- function(img_mat_in, points, clusters) {
 centers <- function(points, clusters) {
   do.call("rbind", by(points, clusters, colMeans, simplify = FALSE))
 }
+
+################################################################################
 
 get_clusters <- function(points, K_seq) {
 
