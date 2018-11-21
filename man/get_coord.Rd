@@ -5,7 +5,7 @@
 \title{Get coordinates from image of points}
 \usage{
 get_coord(file, x_ticks, y_ticks, K, K_min = K, K_max = K,
-  max_pixels = 3000)
+  max_pixels = 5000)
 }
 \arguments{
 \item{file}{Path to image.}

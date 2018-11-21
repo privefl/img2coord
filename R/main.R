@@ -32,7 +32,7 @@
 #' plot(coord$y, y, pch = 20, cex = 1.5); abline(0, 1, col = "red")
 #'
 get_coord <- function(file, x_ticks, y_ticks, K, K_min = K, K_max = K,
-                      max_pixels = 3000) {
+                      max_pixels = 5000) {
 
   # Get image as sparse matrix
   img <- file %>%
