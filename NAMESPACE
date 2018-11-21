@@ -2,4 +2,7 @@
 
 export(get_coord)
 import(Matrix)
+importFrom(graphics,par)
+importFrom(graphics,plot)
+importFrom(graphics,points)
 importFrom(magrittr,"%>%")

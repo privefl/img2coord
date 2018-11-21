@@ -17,6 +17,7 @@
 #'
 #' @import Matrix
 #' @importFrom magrittr %>%
+#' @importFrom graphics par plot points
 #'
 #' @examples
 #' # Create some image
@@ -70,8 +71,8 @@ get_coord <- function(file, x_ticks, y_ticks, K, K_min = K, K_max = K,
   pos <- sweep(centers, 2, attr(img_mat_in, "offset"), '+')
   points(pos, pch = 20, col = "red")
 
-  x <- predict(mods$mod.x, data.frame(pos = pos[, 1]))
-  y <- predict(mods$mod.y, data.frame(pos = pos[, 2]))
+  x <- stats::predict(mods$mod.x, data.frame(pos = pos[, 1]))
+  y <- stats::predict(mods$mod.y, data.frame(pos = pos[, 2]))
 
   res <- data.frame(x, y)
   structure(as.list(res[order(res$x), ]), stat = attr(clusters, "stat"))
