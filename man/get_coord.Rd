@@ -4,11 +4,11 @@
 \alias{get_coord}
 \title{Get coordinates from image of points}
 \usage{
-get_coord(file, x_ticks, y_ticks, K, K_min = K, K_max = K,
-  max_pixels = 10000, scale = NULL)
+get_coord(input, x_ticks, y_ticks, K, K_min = K, K_max = K,
+  max_pixels = 10000, plot = TRUE)
 }
 \arguments{
-\item{file}{Path to image.}
+\item{input}{Path to image or directly a Magick image.}
 
 \item{x_ticks}{Values of all ticks of the x axis.}
 
@@ -23,9 +23,7 @@ Use \code{K_min} and \code{K_max} if you only know an interval.}
 
 \item{max_pixels}{Maximum number of pixels representing points.}
 
-\item{scale}{Resize the image (number of pixels) by a factor.
-This parameter is useful if there are too many pixels.
-You can e.g. use \code{scale = 0.5} to halve the number of pixels.}
+\item{plot}{Whether to plot centers on the image? Default is \code{TRUE}.}
 }
 \value{
 A list of coordinates. There is also an attribute "stat" which was
@@ -44,7 +42,13 @@ dev.off()
 # Get coordinates
 (coord <- get_coord(file, seq(5, 20, 5), seq(0, 1, 0.2),
                     K_min = 10, K_max = 30))
-round(coord$x, 1)
+round(coord$x, 2)
 plot(coord$y, y, pch = 20, cex = 1.5); abline(0, 1, col = "red")
+
+# When the image is too large, you can downsize it
+(coord2 <- file \%>\% img_read() \%>\% img_scale(0.7) \%>\%
+    get_coord(seq(5, 20, 5), seq(0, 1, 0.2), K_min = 10, K_max = 30))
+round(coord2$x, 2)
+plot(coord2$y, y, pch = 20, cex = 1.5); abline(0, 1, col = "red")
 
 }

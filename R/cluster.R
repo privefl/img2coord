@@ -1,15 +1,10 @@
 ################################################################################
 
 get_centers <- function(img_mat_in, points, clusters) {
-
-  do.call("rbind", by(points, clusters, simplify = FALSE, FUN = function(pts) {
-    x.group <- pts[, 1]
-    y.group <- pts[, 2]
-    w.group <- img_mat_in[cbind(x.group, y.group)]
-    x.mean <- stats::weighted.mean(x.group, w.group)
-    y.mean <- stats::weighted.mean(y.group, w.group)
-    c(x.mean, y.mean)
-  }))
+  do.call("rbind", by(points, clusters, FUN = function(pts) {
+    pts <- as.matrix(pts)
+    apply(pts, 2, stats::weighted.mean, w = img_mat_in[pts])
+  }, simplify = FALSE))
 }
 
 ################################################################################
@@ -27,15 +22,17 @@ get_clusters <- function(points, K_seq) {
 
   stats <- sapply(K_seq, function(k) {
     clusters_k <- stats::cutree(hc, k)
-    km <- stats::kmeans(points, centers = centers(points, clusters_k),
-                        iter.max = 100)
-    c(ineq::Gini(km$size), mean(cluster::silhouette(clusters_k, d)[, 3]))
+    c(ineq::Gini(table(clusters_k)),
+      mean(cluster::silhouette(clusters_k, d)[, 3]))
   })
   stat <- stats[2, ]^2 / stats[1, ]
 
   K_opt <- K_seq[which.max(stat)]
+
+  # For some reason, this final step gives more precise results
   centers.init <- centers(points, stats::cutree(hc, K_opt))
-  km_opt <- stats::kmeans(points, centers = centers.init, iter.max = 1000)
+  suppressWarnings(
+    km_opt <- stats::kmeans(points, centers = centers.init, iter.max = 1000))
 
   structure(km_opt$cluster, stat = stats::setNames(stat, K_seq), K_opt = K_opt)
 }

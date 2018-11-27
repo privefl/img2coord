@@ -1,3 +1,7 @@
+^codecov\.yml$
+^appveyor\.yml$
+^\.travis\.yml$
+^data-raw$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^tmp-png$

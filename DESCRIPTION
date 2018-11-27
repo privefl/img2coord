@@ -1,10 +1,9 @@
 Package: img2coord
 Title: Coordinates of Points from an Image
-Version: 0.1.0
-Date: 2018-11-21
+Version: 0.2.0
+Date: 2018-11-27
 Authors@R: 
-    person(given = "Florian",
-           family = "Privé",
+    person("Florian", "Privé", 
            role = c("aut", "cre"),
            email = "florian.prive.21@gmail.com")
 Description: What the package does (one paragraph).
@@ -16,9 +15,10 @@ RoxygenNote: 6.1.0.9000
 Imports: 
     cluster,
     flashClust,
-    graphics,
-    imager,
+    ggplot2 (>= 3.0),
     ineq,
-    magrittr,
-    Matrix,
+    magick,
     stats
+Suggests: 
+    testthat,
+    covr

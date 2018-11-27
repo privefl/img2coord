@@ -19,11 +19,10 @@ tick2val <- function(uval, ind) {
 
 ################################################################################
 
-#' @import Matrix
 get_contours <- function(img_mat) {
 
-  cont.ind1 <- which(rowMeans(img_mat != 0) > 0.5)
-  cont.ind2 <- which(colMeans(img_mat != 0) > 0.5)
+  cont.ind1 <- which(rowMeans(img_mat > 0.1) > 0.5)
+  cont.ind2 <- which(colMeans(img_mat > 0.1) > 0.5)
 
   cont.bool1 <- tick2val(c(FALSE, TRUE), cont.ind1)
   cont.bool2 <- tick2val(c(FALSE, TRUE), cont.ind2)
@@ -50,17 +49,16 @@ get_inside <- function(img_mat, list_ind_cont) {
 
 ################################################################################
 
-#' @import Matrix
 get_tick_mod <- function(img_mat, list_ind_cont, val_tick_x, val_tick_y) {
 
-  i.x <- max(list_ind_cont$ind2.max) + 2L
-  i.y <- min(list_ind_cont$ind1.min) - 2L
+  i.x <- max(list_ind_cont$ind1.max) + 2L
+  i.y <- min(list_ind_cont$ind2.min) - 2L
 
-  ind.x <- which(img_mat[, i.x] != 0)
-  ind.y <- which(img_mat[i.y, ] != 0)
+  ind.x <- which(img_mat[i.x, ] > 0.1)
+  ind.y <- which(img_mat[, i.y] > 0.1)
 
-  w.x <- img_mat[ind.x, i.x]
-  w.y <- img_mat[i.y, ind.y]
+  w.x <- img_mat[i.x, ind.x]
+  w.y <- img_mat[ind.y, i.y]
 
   x.val <- tick2val(val_tick_x, ind.x)
   y.val <- tick2val(rev(val_tick_y), ind.y)
