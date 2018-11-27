@@ -10,6 +10,9 @@
 #' @param K_min Minimum number of points in the image.
 #' @param K_max Maximum number of points in the image.
 #' @param max_pixels Maximum number of pixels representing points.
+#' @param scale Resize the image (number of pixels) by a factor.
+#'   This parameter is useful if there are too many pixels.
+#'   You can e.g. use `scale = 0.5` to halve the number of pixels.
 #'
 #' @return A list of coordinates. There is also an attribute "stat" which was
 #'   used to guess the number of points in the image.
@@ -33,7 +36,7 @@
 #' plot(coord$y, y, pch = 20, cex = 1.5); abline(0, 1, col = "red")
 #'
 get_coord <- function(file, x_ticks, y_ticks, K, K_min = K, K_max = K,
-                      max_pixels = 10e3) {
+                      max_pixels = 10e3, scale = NULL) {
 
   # Get image as sparse matrix
   img <- file %>%
@@ -41,7 +44,10 @@ get_coord <- function(file, x_ticks, y_ticks, K, K_min = K, K_max = K,
     imager::flatten.alpha() %>%
     imager::grayscale()
 
-  img_mat <- Matrix(round(1 - as.matrix(img), 14), sparse = TRUE)
+  if (!is.null(scale))
+    img <- imager::imresize(img, scale = sqrt(scale), interpolation = 6)
+
+  img_mat <- Matrix(round(1 - as.matrix(img), 6), sparse = TRUE)
   stopifnot(class(img_mat) == "dgCMatrix")
 
   # Get contour and inside
@@ -52,10 +58,11 @@ get_coord <- function(file, x_ticks, y_ticks, K, K_min = K, K_max = K,
   ind <- which(img_mat_in != 0, arr.ind = TRUE)
   if (nrow(ind) > max_pixels) {
     stop(call. = FALSE, sprintf(
-      "Detected more than %d pixels associated with points (%d).%s%s",
+      "Detected more than %d pixels associated with points (%d).%s%s%s",
       max_pixels, nrow(ind),
       "\n  Make sure you have a white background with no grid (only points).",
-      "\n  You can change 'max_pixels', but it could become time/memory consuming."))
+      "\n  You can change 'max_pixels', but it could become time/memory consuming.",
+      "\n  You can also downsize the image using `scale`."))
   }
 
   # Get clusters and centers

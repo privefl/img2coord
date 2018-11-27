@@ -5,7 +5,7 @@
 \title{Get coordinates from image of points}
 \usage{
 get_coord(file, x_ticks, y_ticks, K, K_min = K, K_max = K,
-  max_pixels = 10000)
+  max_pixels = 10000, scale = NULL)
 }
 \arguments{
 \item{file}{Path to image.}
@@ -22,6 +22,10 @@ Use \code{K_min} and \code{K_max} if you only know an interval.}
 \item{K_max}{Maximum number of points in the image.}
 
 \item{max_pixels}{Maximum number of pixels representing points.}
+
+\item{scale}{Resize the image (number of pixels) by a factor.
+This parameter is useful if there are too many pixels.
+You can e.g. use \code{scale = 0.5} to halve the number of pixels.}
 }
 \value{
 A list of coordinates. There is also an attribute "stat" which was
