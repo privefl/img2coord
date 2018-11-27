@@ -6,6 +6,8 @@
 
 R package to guess coordinates from a scatter plot (as an image).
 
+Have a look at [the blog post introducing this package](https://privefl.github.io/blog/using-clustering-to-find-points-in-an-image/).
+
 ## Installation and usage
 
 ```
