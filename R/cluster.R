@@ -23,7 +23,7 @@ centers <- function(points, clusters) {
 get_clusters <- function(points, K_seq) {
 
   d <- stats::dist(points)
-  hc <- stats::hclust(d)
+  hc <- flashClust::hclust(d)
 
   stats <- sapply(K_seq, function(k) {
     clusters_k <- stats::cutree(hc, k)

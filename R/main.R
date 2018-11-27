@@ -33,7 +33,7 @@
 #' plot(coord$y, y, pch = 20, cex = 1.5); abline(0, 1, col = "red")
 #'
 get_coord <- function(file, x_ticks, y_ticks, K, K_min = K, K_max = K,
-                      max_pixels = 5000) {
+                      max_pixels = 10e3) {
 
   # Get image as sparse matrix
   img <- file %>%
@@ -55,7 +55,7 @@ get_coord <- function(file, x_ticks, y_ticks, K, K_min = K, K_max = K,
       "Detected more than %d pixels associated with points (%d).%s%s",
       max_pixels, nrow(ind),
       "\n  Make sure you have a white background with no grid (only points).",
-      "\n  You can change 'max_pixels', but it could become slow."))
+      "\n  You can change 'max_pixels', but it could become time/memory consuming."))
   }
 
   # Get clusters and centers
